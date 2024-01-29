@@ -8,7 +8,7 @@
 
 Prerequisites:
 
-- Install Bash or similar
+- Install Bash or similar (you can use Cygwin Bash provided with GIT)
 - Install BATS from https://github.com/bats-core/bats-core/
 
 ### Let's introduce idempotence gently on your console
