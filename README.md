@@ -6,12 +6,16 @@
 
 ## Part 1 - Theory in practice with bash
 
-Prerequisites:
+*Let's dive gently into the topic of idempotence, in your bash terminal*
+
+### Prerequisites:
 
 - Install Bash or similar (you can use Cygwin Bash provided with GIT)
 - Install BATS from https://github.com/bats-core/bats-core/
 
-### Let's introduce idempotence gently on your console
+### Steps
+
+*Please don't read further than one step at a time, to not get spoiled*
 
 Run manually in a console:
 
@@ -21,9 +25,7 @@ Run manually in a console:
 > ls
 > myApplication
 ```
-It works because the folder didn't exist, obviously.
-
-But what if we run it again?
+It works because the folder didn't exist, obviously. But what if we run it again?
 
 ```sh
 // Run again
@@ -31,14 +33,19 @@ But what if we run it again?
 > mkdir: myApplication: File exists
 ```
 
-So what could you do? Discuss.
+So what could you do? Discuss and propose options. Then we can consider them one at a time.
+
+
+### Option 1
 
 ```sh
 // Option 1: Ignore error
 > mkdir -p myApplication
 ```
 
-Run it multiple times. Problem solved, but is it? What could go wrong now with this approach?
+Run it multiple times. Problem solved. But is it really? What could go wrong now with this approach?
+
+### Option 2
 
 ```sh
 // Option 2: drop & recreate
@@ -47,6 +54,8 @@ Run it multiple times. Problem solved, but is it? What could go wrong now with t
 
 Run it multiple times. Problem solved. That's how containers work. Discuss the pros and cons.
 
+### Option 3
+
 ```sh
 // Option 3: check & create
 > test -d myApplication || mkdir myApplication
@@ -54,12 +63,15 @@ Run it multiple times. Problem solved. That's how containers work. Discuss the p
 
 Run it multiple times. Problem solved. That's the idempotence you often want in practice.
 
-Ok. So far we had to run again and check manually with 'ls' that the folder was as we expected. How to test automatically without 'ls' each time?
+Ok. So far we had to run again and check manually with `ls` that the folder was as we expected. How to test automatically without `ls` each time?
 
-One way is to use a unit test framework like 'bats'. Or simply using bash scripts.
+One way is to use a unit test framework like `bats`. Or simply using bash scripts.
 
 
-Package the script into its own file 'test_idempotent_script' and execute Bats unit test:
+
+### Test-driven scripts
+
+Package the script into its own file `test_idempotent_script`) and execute it as a unit test with Bats:
 
 ```sh
 bats tests/test_idempotent_script
@@ -67,7 +79,7 @@ bats tests/test_idempotent_script
 
 Start by commenting out the mkdir line, to check the unit test fails, and then we uncomment to make it pass. Youpiii! That's how we can do Test-Driven in script! 
 
-**Also: add teardown() and setup, and a canary test**
+Now if you want your unit tests not to pollute your system, it's good practice to add `teardown()` and `setup()`, and a `canary test`, as in the example test file [here](https://github.com/vbauchart/kata-idempotence-infra/blob/main/tests/test_idempotent_script).
 
 
 ### Getting deeper into practical idempotence
