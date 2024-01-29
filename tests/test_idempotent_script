@@ -1,0 +1,21 @@
+# Canary test
+@test "addition using bc" {
+  [ 4 -eq 4 ]
+}
+
+
+@test "create folder once" {
+  mkdir $TESTDIR/myApplication
+  test -d $TESTDIR/myApplication
+}
+
+# Setup
+setup() {
+  TESTDIR=/tmp/kata-idempotent-infra
+  mkdir $TESTDIR
+}
+
+# Clean up your mess
+teardown() {
+  rm -rf $TESTDIR
+}
